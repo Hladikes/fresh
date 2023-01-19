@@ -10,4 +10,7 @@ import twindPlugin from "$fresh/plugins/twind.ts";
 import manifest from "./fresh.gen.ts";
 import twindConfig from "./twind.config.ts";
 
-await start(manifest, { plugins: [twindPlugin(twindConfig)] });
+import UnoCSS from "$fresh/plugins/unocss.ts"
+
+// await start(manifest, { plugins: [twindPlugin(twindConfig)] });
+await start(manifest, { plugins: [UnoCSS] });
