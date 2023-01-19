@@ -169,7 +169,7 @@ export async function render<Data>(
   }
 
   const plugins = opts.plugins.filter((p) => p.render !== null);
-  const renderResults: [Plugin, PluginRenderResult][] = [];
+  const renderResults: [Plugin, PluginRenderResult | Promise<PluginRenderResult>][] = [];
 
   function render(): PluginRenderFunctionResult {
     const plugin = plugins.shift();
@@ -220,7 +220,9 @@ export async function render<Data>(
   let script =
     `const STATE_COMPONENT = document.getElementById("__FRSH_STATE");const STATE = JSON.parse(STATE_COMPONENT?.textContent ?? "[[],[]]");`;
 
-  for (const [plugin, res] of renderResults) {
+  for (const [plugin, result] of renderResults) {
+    const res = await result;
+    
     for (const hydrate of res.scripts ?? []) {
       const i = state[1].push(hydrate.state) - 1;
       const randomNonce = crypto.randomUUID().replace(/-/g, "");

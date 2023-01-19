@@ -260,7 +260,7 @@ export interface Plugin {
    * The hook can return a `PluginRenderResult` object that can do things like
    * inject CSS into the page, or load additional JS files on the client.
    */
-  render?(ctx: PluginRenderContext): PluginRenderResult;
+  render?(ctx: PluginRenderContext): PluginRenderResult | Promise<PluginRenderResult>;
 }
 
 export interface PluginRenderContext {
