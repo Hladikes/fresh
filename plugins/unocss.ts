@@ -13,17 +13,34 @@ const defaultUnoConfig: UserConfig = {
 };
 const uno = new UnoGenerator(defaultUnoConfig);
 
-export default {
-  name: 'UnoCSS',
-  async render(ctx) {
-    const { htmlText } = ctx.render();
-    const { css } = await uno.generate(htmlText);
-    
-    return {
-      scripts: [],
-      styles: [{
-        cssText: unoResetCSS + '\n' + css,
-      }],
-    };
+// TODO: use JSXInternal.Element for the input array
+export default function UnoPlugin(islands?: Array<(...args: any[]) => any>): Plugin {
+  return {
+    name: 'UnoCSS',
+    async render(ctx) {
+      const { htmlText } = ctx.render();
+
+      // While ctx.render function works for the static content, it does not return
+      // HTML for the content which is represented with islands, therefore there is
+      // no ability to know, what uno classes is each island using.
+      // The trick below works by converting each island into a string, which contains
+      // the source code of the function. We can then pass this source code into the uno
+      // generator, which can read those contents and return CSS styles for the classes
+      // used in each island.
+      let islandsCSS = ''
+      if (Array.isArray(islands)) {
+        const islandsContent = islands.map((fn) => fn.toString()).join('\n')
+        islandsCSS = await uno.generate(islandsContent).then((r) => r.css)
+      }
+
+      const { css } = await uno.generate(htmlText);
+      
+      return {
+        scripts: [],
+        styles: [{
+          cssText: unoResetCSS + '\n'+ islandsCSS + '\n' + css,
+        }],
+      };
+    }
   }
-} as Plugin
+}
