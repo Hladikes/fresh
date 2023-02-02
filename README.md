@@ -1,6 +1,8 @@
 # Forked version
 #### This version of Fresh has the ability to use plugins with async render functions. This feature is particulary useful for UnoCSS plugin which can only work asynchronously.
 
+#### As mentioned in this comment https://github.com/denoland/fresh/issues/728#issuecomment-1241135325, this approach is not safe and you should wait for the official support for the async plugins.
+
 #### I replaced twind plugin with UnoCSS plugin in the demo website to show that the plugin is working. 
 #### **This plugin is just slightly modified version of UnoCSS plugin https://github.com/ije/html/blob/main/plugins/unocss.ts made by https://github.com/ije.**
 #### There might be some visual inconsistencies with this and the original version, but that's just because the original website is using some twind specific CSS classes.
