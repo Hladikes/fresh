@@ -12,5 +12,21 @@ import twindConfig from "./twind.config.ts";
 
 import UnoCSS from "$fresh/plugins/unocss.ts"
 
+import ComponentGallery from "./islands/ComponentGallery.tsx";
+import CopyArea from "./islands/CopyArea.tsx";
+import Counter from "./islands/Counter.tsx";
+import LemonDrop from "./islands/LemonDrop.tsx";
+import SearchButton from "./islands/SearchButton.tsx";
+
 // await start(manifest, { plugins: [twindPlugin(twindConfig)] });
-await start(manifest, { plugins: [UnoCSS] });
+await start(manifest, { 
+  plugins: [
+    UnoCSS([
+      ComponentGallery,
+      CopyArea,
+      Counter,
+      LemonDrop,
+      SearchButton
+    ])
+  ] 
+});
